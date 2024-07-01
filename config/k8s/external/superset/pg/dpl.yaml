@@ -80,4 +80,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/Users/panagiotiskapsalis/PycharmProjects/MARTEL-PROJECTS/AcesDataManager/config/k8s/external/superset/pg/pv"
+    path: "/Users/panagiotiskapsalis/PycharmProjects/MARTEL-PROJECTS/ACES Deployment/config/k8s/external/superset/pg/pv"

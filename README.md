@@ -9,7 +9,26 @@ Licensed under MIT license
 + `Metrics Consumer`: Kafka Consumer which receives extracted metrics
 
 ### Installation Steps & Prerequisites
-Before starting the installation, please make sure that you have a storageclass and please change the hostPaths in Persistent Volume declarations
+Before starting the installation, please make sure that you have a storageclass and please change the 
+hostPaths in Persistent Volume declarations. For instance you need to create a directory called pvs and for timescaledb
+create a folder inside the parent dir called timescale. After that copy paste the absolute path to your PV declaration. Example
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: timescaledb-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: hostpath
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/Users/panagiotiskapsalis/PycharmProjects/MARTEL-PROJECTS/ACES Deployment/pvs/timescaledb"
+```
 #### 2. Storage Components
 ```shell
 cd config/k8s/external/storage-components
@@ -32,14 +51,12 @@ kubectl port-forward svc/neo4j 7474:7474
 ###### 2.3.2 Timescaledb
 ```shell
 kubectl port-forward svc/timescaledb 5432:5432
-cd storage/timescaledb
-python init_table.py
 ```
 #### 3. Metrics Catalogue
 0. `How to build Metrics catalogue dockerfile` see documentation [here](metrics_catalogue/README.md)
 2. `cd config/k8s/aces/metrics_catalogue`
 3. `kubectl apply -f .`
-4. `kubectl port-forward svc/metrics-catalogue 8000:8000`
+4. `kubectl port-forward svc/metrics-catalogue 8000:8002`
 5. Init the Metrics Management System using the following CURL API
 ```shell
 curl -X 'GET' \
@@ -58,6 +75,17 @@ curl -X 'GET' \
 ##### 4.3 Deploy Metrics Scraper
 1. `cd prom-adapter`
 2. `kubectl apply -f .`
+
+In this step you need to wait for kafka being healthy and the same for prometheus
+port forward the services with the following commands:
+
+```shell
+kubectl port-forward svc/control-center 9021:9021
+```
+
+```shell
+kubectl port-forward svc/prometheus-server 9000:80
+```
 
 ##### 4.4 Port Forward Control Center
 ```shell
