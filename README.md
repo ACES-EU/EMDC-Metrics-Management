@@ -9,6 +9,7 @@ Licensed under MIT license
 + `Metrics Consumer`: Kafka Consumer which receives extracted metrics
 
 ### Installation Steps & Prerequisites
+Before starting the installation, please make sure that you have a storageclass and please change the hostPaths in Persistent Volume declarations
 #### 2. Storage Components
 ```shell
 cd config/k8s/external/storage-components
