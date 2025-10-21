@@ -3,6 +3,7 @@ neo4j:
   resources:
     cpu: "0.5"
     memory: "2Gi"
+
   password: "neo4j290292"
 
 volumes:
